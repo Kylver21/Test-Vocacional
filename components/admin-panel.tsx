@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { AdminDashboard } from "@/components/admin-dashboard"
 import { VOCATIONAL_QUESTIONS, CAREERS_DATABASE } from "@/lib/vocational-data"
 
 interface AdminPanelProps {
@@ -12,7 +13,7 @@ interface AdminPanelProps {
 }
 
 export function AdminPanel({ onLogout }: AdminPanelProps) {
-  const [activeTab, setActiveTab] = useState<"questions" | "careers">("questions")
+  const [activeTab, setActiveTab] = useState<"dashboard" | "questions" | "careers">("dashboard")
   const [editingQuestionId, setEditingQuestionId] = useState<number | null>(null)
   const [editingCareerIdx, setEditingCareerIdx] = useState<number | null>(null)
 
@@ -171,7 +172,17 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
           </Button>
         </div>
 
-        <div className="flex gap-4 mb-6">
+        <div className="flex gap-4 mb-6 flex-wrap">
+          <Button
+            onClick={() => setActiveTab("dashboard")}
+            className={`px-6 py-2 rounded-lg font-semibold transition-all ${
+              activeTab === "dashboard"
+                ? "bg-purple-600 text-white shadow-lg"
+                : "bg-white text-gray-700 border-2 border-gray-200 hover:border-purple-600"
+            }`}
+          >
+            Dashboard
+          </Button>
           <Button
             onClick={() => setActiveTab("questions")}
             className={`px-6 py-2 rounded-lg font-semibold transition-all ${
@@ -193,6 +204,8 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
             Gestionar Carreras
           </Button>
         </div>
+
+        {activeTab === "dashboard" && <AdminDashboard />}
 
         {activeTab === "questions" && (
           <div className="space-y-6">

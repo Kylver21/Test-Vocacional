@@ -16,9 +16,16 @@ Sistema de evaluación vocacional con panel administrativo construido con Next.j
 ### 2. Configurar Base de Datos
 
 1. Una vez creado el proyecto, ve a **SQL Editor** en el menú lateral
-2. Copia el contenido del archivo `scripts/01-create-tables.sql`
-3. Pégalo en el editor SQL y haz click en **RUN**
-4. Verifica que las tablas se crearon correctamente en **Table Editor**
+2. **Ejecuta el primer script** (`scripts/01-create-tables.sql`):
+   - Abre el archivo en VS Code
+   - Copia TODO el contenido (Ctrl+A, Ctrl+C)
+   - Pégalo en el SQL Editor de Supabase
+   - Haz click en **"RUN"**
+   - Verifica que diga "Success"
+3. **Ejecuta el segundo script** (`scripts/02-seed-data.sql`):
+   - Repite el proceso anterior con este archivo
+   - Esto poblará la base de datos con preguntas y carreras iniciales
+4. Ve a **Table Editor** y verifica que las tablas se crearon correctamente
 
 ### 3. Obtener Credenciales de API
 
@@ -36,9 +43,24 @@ Sistema de evaluación vocacional con panel administrativo construido con Next.j
 
 2. Edita `.env.local` y reemplaza con tus valores:
    ```env
+   # Supabase
    NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto-id.supabase.co
    NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-clave-anon-aqui
+   
+   # Resend (para envío de emails)
+   RESEND_API_KEY=re_tu-api-key-de-resend
+   
+   # URL de la aplicación
+   NEXT_PUBLIC_APP_URL=http://localhost:3000
    ```
+
+### 5. Configurar Resend (Servicio de Email)
+
+1. Ve a [https://resend.com](https://resend.com) y crea una cuenta
+2. Una vez dentro, ve a **API Keys**
+3. Crea una nueva API key
+4. Copia la key y agrégala a tu `.env.local` como `RESEND_API_KEY`
+5. (Opcional) Verifica un dominio personalizado para enviar desde tu dominio
 
 ### 5. Instalar Dependencias
 
@@ -46,8 +68,12 @@ Sistema de evaluación vocacional con panel administrativo construido con Next.j
 # Con pnpm (recomendado)
 pnpm install
 
+# Instalar dependencias adicionales necesarias
+pnpm add resend
+
 # O con npm
 npm install
+npm add resend
 ```
 
 ### 6. Ejecutar el Proyecto
@@ -89,6 +115,8 @@ Este proyecto requiere las siguientes variables de entorno en `.env.local`:
 
 - `NEXT_PUBLIC_SUPABASE_URL`: URL de tu proyecto Supabase
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Clave pública/anon de tu proyecto Supabase
+- `RESEND_API_KEY`: API Key de Resend para envío de emails
+- `NEXT_PUBLIC_APP_URL`: URL de tu aplicación (para links en emails)
 
 **⚠️ IMPORTANTE**: Nunca subas el archivo `.env.local` a Git. Está incluido en `.gitignore`.
 
@@ -130,9 +158,39 @@ El proyecto incluye las siguientes tablas:
 - **Next.js 16** - Framework React
 - **React 19** - Librería UI
 - **Supabase** - Backend as a Service (BaaS)
+  - Autenticación
+  - Base de datos PostgreSQL
+  - Row Level Security (RLS)
+- **Resend** - Servicio de envío de emails
 - **TypeScript** - Tipado estático
 - **Tailwind CSS** - Estilos
 - **shadcn/ui** - Componentes de UI
+
+## ✨ Funcionalidades Implementadas
+
+### Usuario Final
+- ✅ Registro e inicio de sesión
+- ✅ Test vocacional de 30 preguntas
+- ✅ Resultados personalizados con top 5 carreras
+- ✅ Envío de resultados por email
+- ✅ Historial de tests completados
+- ✅ Detalles completos de carreras (salario, universidades, videos)
+
+### Administrador
+- ✅ Panel de administración protegido
+- ✅ Dashboard con estadísticas en tiempo real
+- ✅ Gestión completa de preguntas (CRUD)
+- ✅ Gestión completa de carreras (CRUD)
+- ✅ Visualización de carreras más recomendadas
+- ✅ Métricas de uso del sistema
+
+### Sistema
+- ✅ Persistencia de datos en Supabase
+- ✅ Envío de emails con Resend
+- ✅ Validaciones de entrada
+- ✅ Manejo de errores
+- ✅ Row Level Security (RLS)
+- ✅ API Routes protegidas
 
 ## 🚀 Deployment
 

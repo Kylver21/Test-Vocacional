@@ -83,15 +83,17 @@ export function LoginForm({ onLoginSuccess, onAccessAdmin }: LoginFormProps) {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4">
-      <Card className="w-full max-w-md shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-lg">
-          <CardTitle className="text-2xl">{isLogin ? "Iniciar Sesión" : "Registrarse"}</CardTitle>
-          <CardDescription className="text-blue-100">
+    <div className="flex items-center justify-center min-h-screen p-4 bg-gray-50">
+      <Card className="w-full max-w-md shadow-md border border-gray-200">
+        <div className="bg-blue-600 p-6 text-white">
+          <CardTitle className="text-2xl font-semibold text-white mb-1">
+            {isLogin ? "Iniciar Sesión" : "Registrarse"}
+          </CardTitle>
+          <CardDescription className="text-blue-100 text-sm">
             {isLogin ? "Accede a tu test vocacional" : "Crea tu cuenta para comenzar"}
           </CardDescription>
-        </CardHeader>
-        <CardContent className="pt-6">
+        </div>
+        <CardContent className="pt-6 pb-6 px-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
@@ -102,6 +104,7 @@ export function LoginForm({ onLoginSuccess, onAccessAdmin }: LoginFormProps) {
                 placeholder="tu@email.com"
                 required
                 disabled={loading}
+                className="border border-gray-300 focus:border-blue-500"
               />
             </div>
             <div>
@@ -113,11 +116,27 @@ export function LoginForm({ onLoginSuccess, onAccessAdmin }: LoginFormProps) {
                 placeholder="••••••••"
                 required
                 disabled={loading}
+                className="border border-gray-300 focus:border-blue-500"
               />
             </div>
-            {error && <div className="text-red-600 text-sm bg-red-50 p-2 rounded">{error}</div>}
-            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={loading}>
-              {loading ? "Cargando..." : isLogin ? "Iniciar Sesión" : "Registrarse"}
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded text-sm">
+                {error}
+              </div>
+            )}
+            <Button 
+              type="submit" 
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white" 
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white/30 border-t-white"></div>
+                  <span>Cargando...</span>
+                </span>
+              ) : (
+                isLogin ? "Iniciar Sesión" : "Registrarse"
+              )}
             </Button>
           </form>
           <div className="mt-4 text-center">
@@ -133,11 +152,11 @@ export function LoginForm({ onLoginSuccess, onAccessAdmin }: LoginFormProps) {
             </button>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-gray-200">
+          <div className="mt-5 pt-4 border-t border-gray-200">
             <button
               type="button"
               onClick={onAccessAdmin}
-              className="w-full text-xs text-gray-500 hover:text-gray-700 py-2 px-3 rounded bg-gray-50 hover:bg-gray-100 transition-colors"
+              className="w-full text-xs text-gray-600 hover:text-gray-800 py-2 px-3 rounded bg-gray-50 hover:bg-gray-100 transition-colors"
             >
               ¿Eres administrador?
             </button>
