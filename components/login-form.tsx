@@ -83,17 +83,24 @@ export function LoginForm({ onLoginSuccess, onAccessAdmin }: LoginFormProps) {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4 bg-gray-50">
-      <Card className="w-full max-w-md shadow-md border border-gray-200">
-        <div className="bg-blue-600 p-6 text-white">
-          <CardTitle className="text-2xl font-semibold text-white mb-1">
+    <div className="flex items-center justify-center min-h-screen p-4 bg-gradient-to-br from-gray-50 via-white to-indigo-50">
+      <Card className="w-full max-w-md shadow-2xl border-0 overflow-hidden">
+        <div className="bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 p-6 text-white">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="h-10 w-10 rounded-xl bg-white/15 backdrop-blur flex items-center justify-center text-xl">
+              🎯
+            </div>
+            <div>
+              <CardTitle className="text-2xl font-bold text-white leading-tight">
             {isLogin ? "Iniciar Sesión" : "Registrarse"}
-          </CardTitle>
-          <CardDescription className="text-blue-100 text-sm">
+              </CardTitle>
+              <CardDescription className="text-white/80 text-sm">
             {isLogin ? "Accede a tu test vocacional" : "Crea tu cuenta para comenzar"}
-          </CardDescription>
+              </CardDescription>
+            </div>
+          </div>
         </div>
-        <CardContent className="pt-6 pb-6 px-6">
+        <CardContent className="pt-6 pb-6 px-6 bg-gradient-to-b from-gray-50 to-white">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
@@ -104,7 +111,7 @@ export function LoginForm({ onLoginSuccess, onAccessAdmin }: LoginFormProps) {
                 placeholder="tu@email.com"
                 required
                 disabled={loading}
-                className="border border-gray-300 focus:border-blue-500"
+                className="border border-gray-200 bg-white focus:border-indigo-500"
               />
             </div>
             <div>
@@ -116,7 +123,7 @@ export function LoginForm({ onLoginSuccess, onAccessAdmin }: LoginFormProps) {
                 placeholder="••••••••"
                 required
                 disabled={loading}
-                className="border border-gray-300 focus:border-blue-500"
+                className="border border-gray-200 bg-white focus:border-indigo-500"
               />
             </div>
             {error && (
@@ -126,7 +133,7 @@ export function LoginForm({ onLoginSuccess, onAccessAdmin }: LoginFormProps) {
             )}
             <Button 
               type="submit" 
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white" 
+              className="w-full bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:opacity-95 text-white" 
               disabled={loading}
             >
               {loading ? (
@@ -146,7 +153,7 @@ export function LoginForm({ onLoginSuccess, onAccessAdmin }: LoginFormProps) {
                 setIsLogin(!isLogin)
                 setError("")
               }}
-              className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+              className="text-indigo-600 hover:text-indigo-700 text-sm font-semibold"
             >
               {isLogin ? "¿No tienes cuenta? Regístrate" : "¿Ya tienes cuenta? Inicia sesión"}
             </button>

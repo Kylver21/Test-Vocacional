@@ -38,6 +38,24 @@ export interface TestResult {
   created_at: string
 }
 
+function dedupeAnswers(answers: Array<{ text: string; category: string; value: number }>) {
+  const seen = new Set<string>()
+  const result: Array<{ text: string; category: string; value: number }> = []
+
+  for (const answer of answers) {
+    const text = (answer?.text || "").trim()
+    if (!text) continue
+    const category = (answer?.category || "").trim()
+    const value = Number.isFinite(answer?.value) ? Number(answer.value) : 0
+    const key = `${text}::${category}::${value}`
+    if (seen.has(key)) continue
+    seen.add(key)
+    result.push({ text, category, value })
+  }
+
+  return result
+}
+
 // Cargar todas las preguntas con sus respuestas
 export async function loadQuestionsFromDB(): Promise<{ success: boolean; data?: any[]; error?: string }> {
   const supabase = createClient()
@@ -68,11 +86,13 @@ export async function loadQuestionsFromDB(): Promise<{ success: boolean; data?: 
   const formattedQuestions =
     questions?.map((q: any) => ({
       question: q.question_text,
-      answers: q.question_answers?.map((a: any) => ({
-        text: a.answer_text,
-        category: a.category,
-        value: a.value,
-      })) || [],
+      answers: dedupeAnswers(
+        (q.question_answers || []).map((a: any) => ({
+          text: a.answer_text,
+          category: a.category,
+          value: a.value,
+        })),
+      ),
     })) || []
 
   return { success: true, data: formattedQuestions }

@@ -141,20 +141,16 @@ export async function POST(request: NextRequest) {
       </html>
     `
 
-    // Envía el email con Resend
+    // Envía el email con Resend (al correo del usuario)
     try {
-      // Email verificado del administrador (para plan gratuito de Resend)
-      const adminEmail = "kilverpaucar1@gmail.com"
-      
-      // Determinar destinatario: si es el admin, enviar directo; si no, enviar copia al admin
-      const isAdminEmail = email.toLowerCase() === adminEmail.toLowerCase()
-      
+      // En Resend: para enviar a cualquier correo en producción, configura un dominio verificado
+      // y define RESEND_FROM_EMAIL como, por ejemplo: "Test Vocacional <no-reply@tudominio.com>".
+      const from = process.env.RESEND_FROM_EMAIL || "Test Vocacional <onboarding@resend.dev>"
+
       const result = await resend.emails.send({
-        from: "Test Vocacional <onboarding@resend.dev>",
-        to: isAdminEmail ? email : adminEmail,
-        subject: isAdminEmail 
-          ? "🎯 Resultados de tu Test Vocacional - Descubre tu Carrera Ideal"
-          : `🎯 [COPIA] Resultados del Test Vocacional de ${email}`,
+        from,
+        to: email,
+        subject: "🎯 Resultados de tu Test Vocacional - Descubre tu Carrera Ideal",
         html: emailHtml,
       })
 
@@ -167,17 +163,12 @@ export async function POST(request: NextRequest) {
       }
 
       console.log("[API] Email enviado exitosamente:", result.data?.id)
-      
-      // Mensaje personalizado según el destinatario
-      const successMessage = isAdminEmail
-        ? "Email enviado correctamente"
-        : "Resultados guardados. Se envió una copia al administrador."
-      
+
       return NextResponse.json({ 
         success: true, 
         messageId: result.data?.id,
         emailSent: true,
-        message: successMessage
+        message: "Email enviado correctamente"
       }, { status: 200 })
 
     } catch (emailError: any) {
